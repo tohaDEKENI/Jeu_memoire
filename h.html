@@ -5,120 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-    body{
-      height:100vh;
-      background-color: rgb(1, 2, 31);
-      display: flex;
-      justify-content:center;
-      align-items:center;
-    }
-    .conteneur{
-      display: flex;
-      justify-content: center;  
-      align-items: center;
-      position: relative;;
+    .t{
+      display:flex;
+      background-color: aquamarine;
       width:500px;
       height:500px;
-      background-color: transparent
-    }
-    .courbe{
-      display:flex;
-      justify-content: center;
       align-items: center;
-      position: absolute;
-      border-radius:50%;
-      width: 200px;
-      height: 200px;
+      justify-content: center;
+      gap:30px
     }
-    .un{
-      border-top:5px solid;
-      border-color: red;
-      transform:skew(30deg);
-      animation: rouge 1s infinite;;
-  
+
+    .o{
+      background-color: blue;
+      width:45%;
+      height:90% ;
+    
     }
-    .deux{
-     
-      border-right:5px solid;
-      border-color: green;
-      transform:skew(-30deg);
-      animation: vert 1s infinite;
+    .p{
+      background-color: red;
+      width:45%;
+      height:90%;
     }
-    .trois{
-      border-bottom:5px solid;
-      border-color: rgb(255, 217, 0);
-      transform:skew(30deg);
-      animation: jaune 1s infinite;
-    }
-    @keyframes rouge{
-      0%{
-        transform:skew(30deg) rotate(0deg);
-      }
-      50%{
-        transform:skew(30deg) rotate(180deg);
-      }
-      100%{
-        transform:skew(30deg) rotate(360deg);
-      }
-    }
-    @keyframes vert{
-      0%{
-        transform:skew(-30deg) rotate(0deg);
-      }
-      50%{
-        transform:skew(-30deg) rotate(180deg);
-      }
-      100%{
-        transform:skew(-30deg) rotate(360deg);
-      }
-    }
-    @keyframes jaune{
-      0%{
-        transform:skew(30deg) rotate(0deg);
-      }
-      50%{
-        transform:skew(30deg) rotate(90deg);
-      }
-      100%{
-        transform:skew(30deg) rotate(360deg);
-      }
-    }
-    .rond{
-      width:100px;
-      height:100px;
-      background-color: white;
-      border-radius:50%;
-      opacity: 0.3;
-      box-shadow: 0px 0px 20px red,0px 0px 20px green,0px 0px 20px yellow;
-      animation: boule 2s infinite;
-      
-    }
-    @keyframes boule{
-      0%{
-        box-shadow:  0px 0px 20px red,0px 0px 20px green,0px 0px 20px yellow;
-        background-color: aliceblue;
-      }
-      25%{
-        box-shadow: 0px 0px 20px rgb(43, 226, 113);
-        background-color: green;
-      }
-      50%{
-        box-shadow: 0px 0px 20px rgb(255, 217, 0);
-        background-color: yellow;
-      }
-      100%{
-        box-shadow: 0px 0px 20px rgb(43, 226, 113);
-        background-color: red;
-      }
+    .o::after{
+      content:"";
+      background-color: rgb(0, 255, 13);
+      width:200px;
+      height:10px;
+      display: block;
+      margin:455px auto 20px
     }
   </style>
 </head>
 <body>
-  <div class='conteneur'>
-    <div class="courbe un"></div>
-    <div class="courbe deux"></div>
-    <div class="courbe trois"></div>
-    <div class="rond"></div>
-  </div>
+  <section class="t">
+    <div class="o"></div>
+    <div class="p"></div>
+  </section>
 </body>
 </html>

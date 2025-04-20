@@ -1,7 +1,24 @@
 from h import*
+import mysql.connector
+from tkinter import ttk
+from datetime import datetime
+
+    
+
+    
 class Memory_game2(Memory_game):
     def __init__(self, fenetre):
         super().__init__(fenetre)
+                    
+        self.conn = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="jeu_memoire"
+        )
+        self.cursor = self.conn.cursor()
+        
+        
     def changerTaillegrille(self, ligne, colonne):
         """Met à jour la taille de la grille et la recrée."""
         self.ligne = ligne
@@ -125,7 +142,18 @@ class Memory_game2(Memory_game):
                 self.carteTrouver +=1
                 print(len(self.listeImage))
                 print(self.carteTrouver)
+                
+                
                 if self.carteTrouver == len(self.listeImage)//2:
+                    
+                    self.cursor.execute("INSERT INTO Score (score_obtenu ,temps_ecoule,erreur,coups) VALUES(%s,%s,%s,%s)", (self.score,  self.second, self.erreur, self.coup))
+                    print("c'est bien fait")
+                    self.conn.commit()
+                    self.cursor.execute("INSERT INTO Partie (Nom_joueur,date_heure) VALUES(%s,%s)",(self.nomJouer,datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+                    self.conn.commit()
+                    
+                 
+                    
                     print("felicitation")
                     def gagner():
                         self.T = False
@@ -195,6 +223,7 @@ class Memory_game2(Memory_game):
                 self.erreur+=1
                 self.erreurlabel.configure(text=f"ERREUR: {self.erreur}")
             self.carteRetourner.clear()
+           
             
     def reinitialiserCarte(self,l1,c1,l2,c2):
         self.n[l1][c1].config(image=self.photo)

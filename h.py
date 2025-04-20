@@ -3,6 +3,8 @@ from tkinter import*
 from CTkMessagebox import CTkMessagebox
 from PIL import Image ,ImageTk
 from random import*
+import pygame
+from tkinter import ttk
 
 
 
@@ -11,6 +13,7 @@ class Memory_game:
     def __init__(self,fenetre):
         self.fenetre = fenetre
         self.fenetre.geometry("800x800")
+        self.fenetre.title("Jeu Memoire")
         self.ligne = 4
         self.colonne = 4
         self.largeur = 150
@@ -26,6 +29,7 @@ class Memory_game:
         self.minute = 0
         self.T = False
         self.carteTrouver = 0
+        self.nomJouer = "dekeni Toha"
         
         
         imag = 'bleu.jpeg'
@@ -79,9 +83,49 @@ class Memory_game:
         
         self.tab1 = CTkTabview(self.fr1,width=750,height=750,fg_color="#FCC6FF")
         self.tab1.pack()
+        
         self.tab = self.tab1.add("ACCUEIL")
         self.ta = self.tab1.add("PARAMÈTRE")
         self.t = self.tab1.add("PROFILE")
+        
+                
+        style = ttk.Style()
+        style.theme_use("default") 
+
+       
+        style.configure("Treeview",
+            background="#2e2e2e",
+            foreground="white",
+            rowheight=25,
+            fieldbackground="#2e2e2e",
+            font=("Helvetica", 10)
+        )
+
+       
+        style.configure("Treeview.Heading",
+            background="#444",
+            foreground="cyan",
+            font=("Helvetica", 11, "bold")
+        )
+
+        
+        style.map("Treeview",
+            background=[('selected', '#6A9FB5')],
+            foreground=[('selected', 'red')]
+)
+        
+        self.tree3 = ttk.Treeview(self.t,columns=("score","temps","erreur","coups"), show="headings")
+        self.tree3.heading("score",text="Score")
+        self.tree3.heading("temps",text="Temps")
+        self.tree3.heading("erreur",text="Erreur")
+        self.tree3.heading("coups",text="nombre coups")
+        
+        self.tree3.column("score",anchor="center")
+        self.tree3.column("temps",anchor="center")
+        self.tree3.column("erreur",anchor="center")
+        self.tree3.column("coups",anchor="center")
+        self.tree3.pack()      
+        
         for ta in self.tab1._segmented_button._buttons_dict.values():
             ta.configure(font=("Arial", 20, "bold"))
         self.frameHaut = CTkFrame(self.tab,fg_color="#4B164C",height=100,width=750)
@@ -156,6 +200,7 @@ class Memory_game:
                                    font=("",12,"italic"),fg_color="lightblue",width=750)
         self.LabelPara.pack()
         self.framebas.pack()
+        
         
         imCarte = Image.open("cartes.png")
         imCarte = imCarte.resize((100,100))
@@ -376,5 +421,12 @@ class Memory_game:
     
     def changerFrame(self,frame):
         frame.tkraise()
+        
+    def Musique(self):
+        pygame.init()
+        musique = pygame.mixer.Sound("happy-kids-music-307326.mp3")
+        musique.play(-1)
+        
+        
     def run(self):
         self.fenetre.mainloop()

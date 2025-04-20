@@ -2,7 +2,7 @@ import mysql.connector
 from db_manager import*
 from tkinter import*
 from tkinter import ttk
-import datetime
+from datetime import datetime
 
 class Gestion_base_de_donnee(FrameMultijoueur):
     def __init__(self, fenetre):
@@ -15,20 +15,17 @@ class Gestion_base_de_donnee(FrameMultijoueur):
             password="",
             database="jeu_memoire"
         )
+        
         self.cursor = self.conn.cursor()
         
        
-        
-
-    
-        
     def creeTable(self):
         
         def Utilisateurs():
             def Envoyer():
                 nom = entry_nom.get()
                 age = entry_email.get()
-                mail =  entry_mdp.get()
+                mail = entry_mdp.get()
                 
                 self.cursor.execute("INSERT INTO utilisateur (pseudo,email) VALUES(%s,%s)",(nom,mail))
                 self.conn.commit()
@@ -86,6 +83,7 @@ class Gestion_base_de_donnee(FrameMultijoueur):
         """
             CREATE TABLE IF NOT EXISTS Partie (
             id_partie INT AUTO_INCREMENT PRIMARY KEY,
+            Nom_joueur VARCHAR(30),
             date_heure DATETIME DEFAULT CURRENT_TIMESTAMP,
             mode ENUM('solo', 'multijoueur', 'vs_ordi') NOT NULL
         );
@@ -116,24 +114,55 @@ class Gestion_base_de_donnee(FrameMultijoueur):
             
     def Afficher(self):
         
-        self.tree = ttk.Treeview(self.t,columns=("identifient","nom","email"), show="headings")
+        tree2 = ttk.Treeview(self.t,columns=("id","nom_joueur","mode","heure"), show="headings")
+        tree2.heading("id",text="partie-jouer")
+        tree2.heading("nom_joueur",text="Nom joueur")
+        tree2.heading("mode",text="mode")
+        tree2.heading("heure",text="jour-date-heure")
+        
+        
+        tree2.column("id",anchor="center")
+        tree2.column("nom_joueur",anchor="center")
+        tree2.column("mode",anchor="center")
+        tree2.column("heure",anchor="center")
+        tree2.pack()
+        
+        self.tree = ttk.Treeview(self.t,columns=("identifient","nom","pseudo","email"), show="headings",height=10)
         self.tree.heading("identifient",text="joueurs")
-        self. tree.heading("nom",text="pseaudo")
+        self. tree.heading("nom",text="Nom")
+        self.tree.heading("pseudo",text="pseudo")
         self.tree.heading("email",text="email")
+        self.tree.pack(pady=0, padx=0, fill="both", expand=True)
         self.tree.pack()
         
         self.cursor.execute("SELECT * FROM utilisateur ")
         res = self.cursor.fetchall()
         
-        for _ in res:
-            self.tree.insert("","end",values=(_))
+        for i in res:
+            self.tree.insert("","end",values=(i))
+            print(i[0],i[3],i[2],i[1])
+
         
-        tree2 = ttk.Treeview(self.t,columns=("id","mode","heure"), show="headings")
-        tree2.heading("id",text="partie-jouer")
-        tree2.heading("mode",text="mode")
-        tree2.heading("heure",text="heure")
-        tree2.pack()
-   
+        
+        self.cursor.execute('SELECT * FROM Partie')
+        resue = self.cursor.fetchall()
+        for i in resue:
+            tree2.insert("","end",values=(i[0],i[3],i[2],i[1]))
+            print("c'est i",i[0],i[3],i[2],i[1])
+        
+        self.cursor.execute('SELECT * FROM Score')
+        resultat = self.cursor.fetchall()
+        for i in resultat:
+            print(i)
+            self.tree3.insert("","end",values=(i[3],i[4],i[5],i[6]))
+
+    
+    
+        
+    
+            
+    
+            
 if __name__=='__main__':
     jeu = CTk()
     #fenetre = Memory_game(jeu)
@@ -144,6 +173,7 @@ if __name__=='__main__':
     fenetre.frame3()
     fenetre.Afficher()
     fenetre.creeTable()
+    fenetre.Musique()
     #fenetre.insertion_des_donnee()
     jeu.resizable(width=False,height=False)
     fenetre.run()
